@@ -1172,6 +1172,11 @@ width: 45%;
     padding-left: 50px;
 }
 
+.project-item.no-image .project-description {
+  flex: 0 0 100%;
+  padding-left: 0;
+}
+
 /* Style for the 'Learn more' button, adjust according to your needs */
 .about-btn {
     display: inline-block;

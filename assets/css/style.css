@@ -1252,34 +1252,6 @@ width: 45%;
     transform: translateY(0); /* Back to original position */
 }
 
-.about-btn-2 {
-    display: inline-block;
-    padding: 10px 25px; /* Adjust padding to make the button larger */
-    text-decoration: none;
-    color: #ffffff; /* Text color */
-    background-image: linear-gradient(45deg, #007bff, #6610f2); /* Gradient background */
-    border: none; /* Remove border */
-    border-radius: 25px; /* Increase border-radius for rounded corners */
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-    font-weight: bold; /* Make the text bold */
-    cursor: pointer; /* Ensure it looks clickable */
-    margin-top: 0px;
-    margin-bottom: 30px;
-}
-
-.about-btn-2:hover, .about-btn-2:focus {
-    background-image: linear-gradient(45deg, #0056b3, #520d9e); /* Darker gradient on hover/focus */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Larger shadow on hover/focus */
-    transform: translateY(-2px); /* Slight move up */
-}
-
-.about-btn-2:active {
-    background-image: linear-gradient(45deg, #003973, #4b0078); /* Even darker gradient on active */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow on active */
-    transform: translateY(0); /* Back to original position */
-}
-
 
 .skills-container {
     display: grid;

@@ -1389,8 +1389,6 @@ width: 45%;
     transition: all 0.3s ease; /* Smooth transition for the hover effect */
 }
 
-
-
 .details {
     position: absolute;
     top: 100%; /* Start hidden below the item */
@@ -1409,7 +1407,7 @@ width: 45%;
     bottom:40px;
     left: 50%; /* Center the overlay */
     transform: translateX(-50%) scale(0); /* Start scaled down and centered */
-    width: 150%; /* Larger than the skill-item */
+    width: 135%;
     background-color: rgb(38 69 110 / 98%); /* Semi-transparent black */
     color: black;
     padding: 15px;
@@ -1425,17 +1423,17 @@ width: 45%;
 .overlay-content {
     text-align: center;
     width:-webkit-fill-available;
-
 }
 
 
 .skill-item:hover .overlay {
     transform: translateX(-50%) scale(1); /* Scale up to full size on hover */
+    bottom: 50px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .skill-item:hover {
     z-index: 10; /* Ensure the skill item and its overlay are above other content */
-    color:#163b6b;
-    font-size:20px;
+    background-color: #163b6b;
+    color: #fff;
 }

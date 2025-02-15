@@ -1219,6 +1219,10 @@ width: 45%;
     padding-left: 50px;
 }
 
+.project-description .button {
+  margin-right: 20px; /* Space between buttons */
+}
+
 .project-item.no-image .project-description {
   flex: 0 0 100%;
   padding-left: 0;

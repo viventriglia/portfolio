@@ -1266,6 +1266,8 @@ width: 45%;
   margin-top: 20px;
   background-color: white;
   color: #007bff;
+  display: inline-block;
+  text-align: center;
 }
 
 .button::before {

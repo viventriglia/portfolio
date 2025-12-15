@@ -1437,3 +1437,50 @@ width: 45%;
     background-color: #163b6b;
     color: #fff;
 }
+
+
+/* ==================================================
+  Conferences / Details expander
+================================================== */
+
+details {
+  margin-bottom: 1rem;
+  padding-bottom: 0.2rem;
+}
+
+details summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 1.2em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.2rem 0.3rem;
+  border-radius: 0.3rem;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: "▸";
+  font-size: 1.4em;
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details summary:hover {
+  color: #149ddd;
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+details summary:focus-visible {
+  outline: 2px solid #149ddd;
+  outline-offset: 2px;
+}

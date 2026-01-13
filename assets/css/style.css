@@ -1444,7 +1444,7 @@ width: 45%;
 ================================================== */
 
 details {
-  margin-bottom: 1rem;
+  margin-bottom: 0.0rem;
   padding-bottom: 0.2rem;
 }
 
@@ -1466,7 +1466,7 @@ details summary::-webkit-details-marker {
 
 details summary::before {
   content: "▸";
-  font-size: 1.4em;
+  font-size: 1.3em;
   opacity: 0.9;
   transition: transform 0.3s ease;
 }

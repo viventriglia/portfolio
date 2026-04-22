@@ -689,7 +689,7 @@ section {
   border-radius: 0.5rem;
   flex-direction: column;
   text-align: center;
-  padding: 1rem;
+  padding: 1.25rem;
 }
 
 .card-front {
@@ -700,6 +700,66 @@ section {
   background: rgb(13 65 253 / 9%);
   color: black;
   transform: rotateY(180deg);
+  gap: 1rem;
+}
+
+.card-back p {
+  margin: 0;
+  max-width: 28ch;
+  line-height: 1.4;
+}
+
+.card-actions {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 13.5rem);
+}
+
+.card-actions .button {
+  width: 100%;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0 1.25rem;
+  line-height: 1;
+}
+
+.card-actions .button::before {
+  height: 100%;
+}
+
+.card-actions .button:hover::before {
+  width: 100%;
+}
+
+.card-actions--three {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: min(100%, 16.5rem);
+}
+
+.card-actions--three .button {
+  height: 2.75em;
+  font-size: 0.92rem;
+  padding: 0 0.9rem;
+}
+
+.card-actions--three .button:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: min(100%, 12rem);
+}
+
+.card--three-actions .card-back {
+  justify-content: center;
+  gap: 1rem;
+}
+
+.card--three-actions .card-back p {
+  max-width: 29ch;
+  line-height: 1.38;
 }
 
 .portfolio .portfolio-wrap {

@@ -189,6 +189,51 @@
   });
 
   /**
+   * Short CV expansion
+   */
+  let resumeColumns = select('.resume .resume-column', true)
+
+  const updateResumeColumns = () => {
+    resumeColumns.forEach((column) => {
+      const button = column.querySelector('.resume-toggle')
+      const extra = column.querySelector('.resume-extra')
+
+      if (!button || !extra) return
+
+      const expanded = button.getAttribute('aria-expanded') === 'true'
+      column.classList.toggle('is-expanded', expanded)
+      extra.setAttribute('aria-hidden', expanded ? 'false' : 'true')
+      extra.style.maxHeight = expanded ? `${extra.scrollHeight}px` : '0px'
+    })
+  }
+
+  if (resumeColumns.length) {
+    resumeColumns.forEach((column) => {
+      const button = column.querySelector('.resume-toggle')
+      if (!button) return
+
+      button.addEventListener('click', () => {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true'
+        const nextExpanded = !isExpanded
+        const label = button.querySelector('.resume-toggle-label')
+
+        button.setAttribute('aria-expanded', nextExpanded ? 'true' : 'false')
+
+        if (label) {
+          label.textContent = nextExpanded
+            ? button.dataset.expandedLabel
+            : button.dataset.collapsedLabel
+        }
+
+        updateResumeColumns()
+      })
+    })
+
+    updateResumeColumns()
+    window.addEventListener('resize', updateResumeColumns)
+  }
+
+  /**
    * Animation on scroll
    */
   window.addEventListener('load', () => {

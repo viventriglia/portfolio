@@ -548,6 +548,79 @@ section {
   border: 2px solid #1f5297;
 }
 
+.resume .resume-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1f5297;
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.resume .resume-toggle i {
+  transition: transform 0.3s ease;
+}
+
+.resume .resume-toggle:hover {
+  color: #149ddd;
+}
+
+.resume .resume-toggle:focus-visible {
+  outline: 2px solid rgba(31, 82, 151, 0.28);
+  outline-offset: 6px;
+  border-radius: 999px;
+}
+
+.resume .resume-column .resume-extra {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 0.45s ease, opacity 0.25s ease;
+}
+
+.resume .resume-column.is-expanded .resume-extra {
+  opacity: 1;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+.resume .resume-column:not(.is-expanded) .resume-item.resume-preview-end {
+  padding-bottom: 6px;
+}
+
+.resume .resume-column.is-expanded .resume-toggle i {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 991.98px) {
+  .resume .resume-toggle {
+    margin-top: 14px;
+    padding: 8px 14px;
+    border: 1px solid rgba(31, 82, 151, 0.14);
+    background: rgba(20, 157, 221, 0.08);
+    font-size: 14px;
+  }
+
+  .resume .resume-toggle:hover {
+    color: #1f5297;
+    background: rgba(20, 157, 221, 0.12);
+  }
+
+  .resume .resume-toggle:focus-visible {
+    outline-offset: 3px;
+  }
+}
+
 /*--------------------------------------------------------------
 # Portfolio
 --------------------------------------------------------------*/

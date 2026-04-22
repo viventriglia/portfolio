@@ -40,19 +40,278 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
+    <!-- Critical CSS -->
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #272829;
+            background: #fff;
+        }
+        a {
+            color: #149ddd;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #37b3ed;
+            text-decoration: none;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            font-family: "Raleway", sans-serif;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .d-flex { display: flex !important; }
+        .flex-column { flex-direction: column !important; }
+        .justify-content-center { justify-content: center !important; }
+        .align-items-center { align-items: center !important; }
+        .img-fluid { max-width: 100%; height: auto; }
+        .rounded-circle { border-radius: 50% !important; }
+        .text-center { text-align: center !important; }
+        .text-light, .text-light a { color: #f8f9fa !important; }
+        .mt-3 { margin-top: 1rem !important; }
+        .d-xl-none { display: inline-flex !important; }
+        @media (min-width: 1200px) {
+            .d-xl-none { display: none !important; }
+        }
+
+        @font-face {
+            font-family: "boxicons-critical";
+            src: url("assets/vendor/boxicons/fonts/boxicons.woff2") format("woff2");
+            font-display: block;
+        }
+        @font-face {
+            font-family: "bootstrap-icons-critical";
+            src: url("assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2") format("woff2");
+            font-display: block;
+        }
+        .bx {
+            font-family: "boxicons-critical" !important;
+            font-weight: normal;
+            font-style: normal;
+            font-variant: normal;
+            line-height: 1;
+            display: inline-block;
+            text-transform: none;
+            speak: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        [class^="bi-"]::before,
+        [class*=" bi-"]::before {
+            display: inline-block;
+            font-family: "bootstrap-icons-critical" !important;
+            font-style: normal;
+            font-weight: normal !important;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            vertical-align: -.125em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .bx-envelope:before { content: "\ea23"; }
+        .bxl-linkedin:before { content: "\ee9e"; }
+        .bx-home:before { content: "\ea74"; }
+        .bx-user:before { content: "\ebbf"; }
+        .bx-spreadsheet:before { content: "\eb80"; }
+        .bx-bullseye:before { content: "\e971"; }
+        .bx-briefcase:before { content: "\e963"; }
+        .bx-calendar:before { content: "\e978"; }
+        .bx-terminal:before { content: "\eb9e"; }
+        .bi-list::before { content: "\f479"; }
+        .bi-github::before { content: "\f3ed"; }
+        .bi-x::before { content: "\f62a"; }
+
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 300px;
+            z-index: 9997;
+            padding: 0 15px;
+            background: #040b14;
+            overflow-y: auto;
+            transition: all 0.5s ease-in-out;
+        }
+        #header .profile img {
+            margin: 30px auto;
+            width: 160px;
+            border-radius: 50% !important;
+            background: #262936;
+            padding: 5px;
+            box-shadow: 0 0 10px 3px #262936, 0 0 25px 20px #040b14;
+        }
+        #header .profile h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            text-align-last: center;
+            font-family: "Poppins", sans-serif;
+        }
+        #header .profile h1 a,
+        #header .profile h1 a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+        #header .profile .social-links a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            margin-right: 4px;
+            border-radius: 50%;
+            background: #212431;
+            color: #fff;
+            font-size: 18px;
+            line-height: 1;
+            text-align: center;
+            padding: 8px 0;
+            transition: 0.3s;
+        }
+        #header .profile .social-links a:hover {
+            background: #149ddd;
+            color: #fff;
+        }
+        #main { margin-left: 300px; }
+        .nav-menu { padding: 30px 0 0; }
+        .nav-menu * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .nav-menu > ul > li {
+            position: relative;
+            white-space: nowrap;
+        }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            color: #a8a9b4;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .nav-menu a i {
+            padding-right: 8px;
+            font-size: 24px;
+            color: #6f7180;
+        }
+        .nav-menu a:hover,
+        .nav-menu .active,
+        .nav-menu li:hover > a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-menu a:hover i,
+        .nav-menu .active i,
+        .nav-menu li:hover > a i {
+            color: #149ddd;
+        }
+        .mobile-nav-toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 9998;
+            border: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            background-color: #149ddd;
+            color: #fff;
+            font-size: 24px;
+            line-height: 0;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s;
+        }
+        .mobile-nav-active { overflow: hidden; }
+        .mobile-nav-active #header { left: 0; }
+        #hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #0b1523 url("assets/img/bckg.webp") top center / cover no-repeat;
+            overflow: hidden;
+        }
+        #hero:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: rgba(5, 13, 24, 0.3);
+        }
+        #hero .hero-container {
+            position: relative;
+            z-index: 2;
+            min-width: 300px;
+            padding: 0 1rem;
+        }
+        #hero h1 {
+            margin: 0 0 10px;
+            color: #fff;
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 56px;
+        }
+        #hero p {
+            margin-bottom: 50px;
+            color: #fff;
+            font-size: 26px;
+            font-family: "Poppins", sans-serif;
+        }
+        #hero p span {
+            color: #fff;
+            letter-spacing: 1px;
+            padding-bottom: 4px;
+            border-bottom: 3px solid #149ddd;
+        }
+        @media (min-width: 1024px) {
+            #hero { background-attachment: fixed; }
+        }
+        @media (max-width: 1199px) {
+            #header { left: -300px; }
+            #main { margin-left: 0; }
+        }
+        @media (max-width: 768px) {
+            #hero h1 {
+                font-size: 28px;
+                line-height: 36px;
+            }
+        }
+    </style>
+
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
-          rel="stylesheet">
+    <link rel="preload"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+          as="style"
+          onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+              rel="stylesheet">
+    </noscript>
 
     <!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preload" href="assets/vendor/bootstrap/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"></noscript>
+    <link rel="preload" href="assets/vendor/boxicons/css/boxicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"></noscript>
+    <link rel="preload" href="assets/vendor/bootstrap-icons/bootstrap-icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"></noscript>
     <link rel="preload" href="assets/vendor/aos/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="assets/vendor/aos/aos.css" rel="stylesheet"></noscript>
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="assets/css/style.css" rel="stylesheet"></noscript>
 
     <!-- Social icons -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>

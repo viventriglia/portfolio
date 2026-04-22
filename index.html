@@ -46,8 +46,8 @@
 
     <!-- Vendor CSS Files -->
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link rel="preload" href="assets/vendor/aos/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="assets/vendor/aos/aos.css" rel="stylesheet"></noscript>
 
@@ -57,7 +57,8 @@
     <!-- Social icons -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons/css/academicons.min.css">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/academicons/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons/css/academicons.min.css"></noscript>
 
     <script type="application/ld+json">
         {
@@ -124,7 +125,7 @@
     <div class="d-flex flex-column">
 
         <div class="profile">
-            <a href="/portfolio/"><img src="assets/img/icon.webp" alt="Profile picture of Vincenzo Ventriglia" class="img-fluid rounded-circle" decoding="async" fetchpriority="high"></a>
+            <a href="/portfolio/"><img src="assets/img/icon.webp" alt="Profile picture of Vincenzo Ventriglia" class="img-fluid rounded-circle" decoding="async" fetchpriority="low"></a>
             <h1 class="text-light"><a href="/portfolio/">Vincenzo Ventriglia</a></h1>
             <div class="social-links mt-3 text-center">
                 <a href="mailto:vincenzo.ventriglia@outlook.com" class="mail" aria-label="Email Vincenzo Ventriglia"><i class="bx bx-envelope"></i></a>
@@ -167,7 +168,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 pt-4 pt-lg-0 content" data-aos="fade-right">
-                    <img src="assets/img/profile.webp" class="img-fluid" alt="Portrait of Vincenzo Ventriglia" decoding="async">
+                    <img src="assets/img/profile.webp" class="img-fluid" alt="Portrait of Vincenzo Ventriglia" loading="lazy" decoding="async">
                 </div>
                 <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
                     <h3>Data Scientist & Machine Learning Engineer</h3>
@@ -1160,15 +1161,15 @@
 
                     <a href="https://pydataroma.python.it/" target="_blank" rel="noopener noreferrer" class="button">
                         <i class="fa fa-link"></i> Website 
-                        <i class="bx bx-chevron-right"></i>
+                        <i class="bi bi-chevron-right"></i>
                     </a>
                     <a href="https://www.meetup.com/pydata-roma-capitale/" target="_blank" rel="noopener noreferrer" class="button">
                         <i class="fa-brands fa-meetup"></i> Meetup 
-                        <i class="bx bx-chevron-right"></i>
+                        <i class="bi bi-chevron-right"></i>
                     </a>
                     <a href="https://www.linkedin.com/company/pydata-roma-capitale/" target="_blank" rel="noopener noreferrer" class="button">
                         <i class="fa-brands fa-linkedin"></i> Linkedin 
-                        <i class="bx bx-chevron-right"></i>
+                        <i class="bi bi-chevron-right"></i>
                     </a>
 
                 </div>
@@ -1387,11 +1388,11 @@
                                 <p>Total Electron Content (TEC) reconstruction with GNSS data – a Python 🐍 package with a Rust 🦀 core</p>
                                 <a href="https://github.com/viventriglia/PyTECGg" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                                 <a href="https://pypi.org/project/pytecgg/" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-python"></i> PyPI
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1408,7 +1409,7 @@
                                 <p>Research project for GNSS ionospheric scintillation forecasting at low latitudes</p>
                                 <a href="https://github.com/viventriglia/scintill-ai" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1425,11 +1426,11 @@
                                 <p>Web app to produce near real-time statistics on your investment portfolio</p>
                                 <a href="https://github.com/viventriglia/personal-finance-for-newbies" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                                 <a href="https://personal-finance-for-newbies.onrender.com" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-solid fa-chart-line"></i> Web App 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1446,15 +1447,15 @@
                                 <p>Sensing of the Earth's Plasmasphere and Ionosphere from the Lunar surface with GNSS signals</p>
                                 <a href="https://github.com/viventriglia/iono-lugre" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                                 <a href="https://viventriglia.github.io/iono-lugre/" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-solid fa-satellite"></i> Web App 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                                 <!-- <a href="https://essopenarchive.org/doi/full/10.22541/essoar.176902858.83882772" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-solid fa-glasses"></i> Preprint
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a> -->
                             </div>
                         </div>
@@ -1471,11 +1472,11 @@
                                 <p>Traveling Ionospheric Disturbances Forecasting System (T-FORS), funded by the European Community, Horizon Europe</p>
                                 <a href="https://github.com/viventriglia/t-fors" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                                 <a href="https://doi.org/10.1051/swsc/2025020" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-solid fa-glasses"></i> Paper 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1492,7 +1493,7 @@
                                 <p>Satellite imagery project (Sentinel-2 mission) to study Mount Vesuvius pre- and post-July 2017 wildfires</p>
                                 <a href="https://github.com/viventriglia/vesuvius-sentinel" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1509,7 +1510,7 @@
                                 <p>Machine Learning algorithm to identify periods of growth, decline and stationarity in stock data</p>
                                 <a href="https://github.com/viventriglia/k-means_clustering_financial_time_series" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1526,7 +1527,7 @@
                                 <p>Image of a black hole, produced by ray tracing photons in a rotating spacetime in General Relativity</p>
                                 <a href="https://github.com/viventriglia/geodesic-light" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1543,7 +1544,7 @@
                                 <p>Does adding quantum features improve the overall performance of a neural network?</p>
                                 <a href="https://github.com/viventriglia/Quantum_Neural_Network_QNN" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1560,7 +1561,7 @@
                                 <p>Draw a recipient for each secret Santa and send an email to each Santa's inbox of who their gift recipient is</p>
                                 <a href="https://github.com/viventriglia/secret-santa" target="_blank" rel="noopener noreferrer" class="button">
                                     <i class="fa-brands fa-github"></i> GitHub 
-                                    <i class="bx bx-chevron-right"></i>
+                                    <i class="bi bi-chevron-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -1581,7 +1582,6 @@
 
 <!-- Vendor JS Files -->
 <script src="assets/vendor/aos/aos.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 <script src="assets/vendor/typed.js/typed.min.js"></script>
 <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>

@@ -594,10 +594,6 @@ section {
   overflow: visible;
 }
 
-.resume .resume-column:not(.is-expanded) .resume-item.resume-preview-end {
-  padding-bottom: 6px;
-}
-
 .resume .resume-column.is-expanded .resume-toggle i {
   transform: rotate(180deg);
 }

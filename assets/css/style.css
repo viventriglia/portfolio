@@ -295,7 +295,13 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
 }
 
-#hero p span {
+#hero .hero-prefix,
+#hero .hero-role {
+  display: inline;
+}
+
+#hero p .typed,
+#hero p .hero-noscript {
   color: #fff;
   padding-bottom: 4px;
   letter-spacing: 1px;
@@ -309,14 +315,45 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
+  #hero .hero-container {
+    min-width: 0;
+    width: min(100%, 20rem);
+    padding: 0 1.25rem;
+  }
+
   #hero h1 {
     font-size: 28px;
     line-height: 36px;
   }
+
   #hero h2 {
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 30px;
+  }
+
+  #hero p {
+    width: min(100%, 17rem);
+    margin: 0 auto 40px;
+    font-size: 22px;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  #hero .hero-prefix {
+    display: block;
+    margin-bottom: 0.15em;
+  }
+
+  #hero .hero-role {
+    display: block;
+    min-height: 2.7em;
+    max-width: 100%;
+  }
+
+  #hero p .typed,
+  #hero p .hero-noscript {
+    white-space: normal;
   }
 }
 

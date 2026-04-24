@@ -268,7 +268,12 @@
             font-size: 26px;
             font-family: "Poppins", sans-serif;
         }
-        #hero p span {
+        #hero .hero-prefix,
+        #hero .hero-role {
+            display: inline;
+        }
+        #hero p .typed,
+        #hero p .hero-noscript {
             color: #fff;
             letter-spacing: 1px;
             padding-bottom: 4px;
@@ -282,9 +287,34 @@
             #main { margin-left: 0; }
         }
         @media (max-width: 768px) {
+            #hero .hero-container {
+                min-width: 0;
+                width: min(100%, 20rem);
+                padding: 0 1.25rem;
+            }
             #hero h1 {
                 font-size: 28px;
                 line-height: 36px;
+            }
+            #hero p {
+                width: min(100%, 17rem);
+                margin: 0 auto 40px;
+                font-size: 22px;
+                line-height: 1.35;
+                text-align: left;
+            }
+            #hero .hero-prefix {
+                display: block;
+                margin-bottom: 0.15em;
+            }
+            #hero .hero-role {
+                display: block;
+                min-height: 2.7em;
+                max-width: 100%;
+            }
+            #hero p .typed,
+            #hero p .hero-noscript {
+                white-space: normal;
             }
         }
     </style>
@@ -429,7 +459,7 @@
 <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
     <div class="hero-container" data-aos="fade-in">
         <h1>Vincenzo Ventriglia</h1>
-        <p>I'm a <span class="typed" data-typed-items="Data Scientist, ML &amp; AI Engineer, Conference Speaker and Organiser, Personal Finance enthusiast"></span><noscript>Data Scientist</noscript></p>
+        <p><span class="hero-prefix">I'm a </span><span class="hero-role"><span class="typed" data-typed-items="Data Scientist, ML &amp; AI Engineer, Conference Speaker and Organiser, Personal Finance enthusiast"></span><noscript><span class="hero-noscript">Data Scientist</span></noscript></span></p>
     </div>
 </section><!-- End Hero -->
 

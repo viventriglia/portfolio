@@ -40,22 +40,6 @@
     el.addEventListener('scroll', listener)
   }
 
-  const scriptPromises = {}
-  const loadScript = (src) => {
-    if (!scriptPromises[src]) {
-      scriptPromises[src] = new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = src
-        script.defer = true
-        script.onload = resolve
-        script.onerror = reject
-        document.body.appendChild(script)
-      })
-    }
-
-    return scriptPromises[src]
-  }
-
   /**
    * Navbar links active state on scroll
    */
@@ -159,82 +143,51 @@
   }
 
   /**
+   * Skills animation
+   */
+  let skilsContent = select('.skills-content');
+  if (skilsContent) {
+    new Waypoint({
+      element: skilsContent,
+      offset: '80%',
+      handler: function(direction) {
+        let progress = select('.progress .progress-bar', true);
+        progress.forEach((el) => {
+          el.style.width = el.getAttribute('aria-valuenow') + '%'
+        });
+      }
+    })
+  }
+
+  /**
    * Porfolio isotope and filter
    */
-  let portfolioIsotope = null
-  let portfolioLoadPromise = null
-
-  const initPortfolio = () => {
-    if (portfolioIsotope) return Promise.resolve(portfolioIsotope)
-    if (portfolioLoadPromise) return portfolioLoadPromise
-
-    const portfolioContainer = select('.portfolio-container')
-    if (!portfolioContainer) return Promise.resolve(null)
-
-    const setupPortfolio = () => {
-      if (portfolioIsotope) return portfolioIsotope
-
-      portfolioIsotope = new Isotope(portfolioContainer, {
+  window.addEventListener('load', () => {
+    let portfolioContainer = select('.portfolio-container');
+    if (portfolioContainer) {
+      let portfolioIsotope = new Isotope(portfolioContainer, {
         itemSelector: '.portfolio-item'
-      })
+      });
 
-      return portfolioIsotope
-    }
+      let portfolioFilters = select('#portfolio-flters li', true);
 
-    portfolioLoadPromise = typeof Isotope !== 'undefined'
-      ? Promise.resolve(setupPortfolio())
-      : loadScript('assets/vendor/isotope-layout/isotope.pkgd.min.js').then(setupPortfolio)
+      on('click', '#portfolio-flters li', function(e) {
+        e.preventDefault();
+        portfolioFilters.forEach(function(el) {
+          el.classList.remove('filter-active');
+        });
+        this.classList.add('filter-active');
 
-    return portfolioLoadPromise
-  }
-
-  const portfolioFilters = select('#portfolio-flters li', true)
-
-  if (portfolioFilters.length) {
-    on('click', '#portfolio-flters li', function(e) {
-      e.preventDefault()
-
-      portfolioFilters.forEach(function(el) {
-        el.classList.remove('filter-active')
-      })
-      this.classList.add('filter-active')
-
-      initPortfolio().then((isotope) => {
-        if (!isotope) return
-
-        isotope.arrange({
+        portfolioIsotope.arrange({
           filter: this.getAttribute('data-filter')
-        })
-
-        isotope.on('arrangeComplete', function() {
-          if (typeof AOS === 'undefined') return
+        });
+        portfolioIsotope.on('arrangeComplete', function() {
           AOS.refresh()
-        })
-      })
-    }, true)
-  }
-
-  const observePortfolio = () => {
-    const projects = select('#projects')
-    if (!projects) return
-
-    if ('IntersectionObserver' in window) {
-      const portfolioObserver = new IntersectionObserver((entries, observer) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          initPortfolio()
-          observer.disconnect()
-        }
-      }, {
-        rootMargin: '800px 0px'
-      })
-
-      portfolioObserver.observe(projects)
-    } else {
-      window.addEventListener('load', initPortfolio)
+        });
+      }, true);
     }
-  }
 
-  observePortfolio()
+  });
 
   /**
    * Short CV expansion

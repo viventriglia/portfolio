@@ -235,6 +235,46 @@
   }
 
   /**
+   * Weekly portfolio metrics
+   */
+  const metricsGrid = select('.metrics-grid')
+
+  if (metricsGrid) {
+    metricsGrid.setAttribute('aria-busy', 'true')
+    fetch('./data/metrics.json', { cache: 'no-cache' })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Metrics request failed (${response.status})`)
+        return response.json()
+      })
+      .then((metrics) => {
+        const numberFormatter = new Intl.NumberFormat('en-US')
+
+        select('[data-metric]', true).forEach((element) => {
+          const value = metrics[element.dataset.metric]
+          if (Number.isFinite(value)) {
+            element.textContent = numberFormatter.format(value)
+          }
+        })
+
+        const updatedElement = select('[data-metrics-updated]')
+        const updatedAt = new Date(metrics.updated_at)
+        if (updatedElement && !Number.isNaN(updatedAt.getTime())) {
+          updatedElement.textContent = new Intl.DateTimeFormat('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+          }).format(updatedAt)
+        }
+
+        metricsGrid.setAttribute('aria-busy', 'false')
+      })
+      .catch((error) => {
+        metricsGrid.setAttribute('aria-busy', 'false')
+        console.warn('Could not load portfolio metrics:', error)
+      })
+  }
+
+  /**
    * Animation on scroll
    */
   window.addEventListener('load', () => {

@@ -441,6 +441,143 @@ section {
   margin-bottom: 0;
 }
 
+.about-metrics {
+  margin-top: 48px;
+}
+
+.metrics-heading {
+  margin-bottom: 18px;
+}
+
+.metrics-heading h3 {
+  margin: 0;
+  color: #173b6c;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric-card {
+  position: relative;
+  display: flex;
+  min-height: 150px;
+  padding: 22px 18px 18px;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  border: 1px solid rgba(23, 59, 108, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(23, 59, 108, 0.07);
+  color: #173b6c;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.metric-card::after {
+  position: absolute;
+  right: -24px;
+  bottom: -34px;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: rgba(20, 157, 221, 0.08);
+  content: "";
+}
+
+.metric-card:hover,
+.metric-card:focus-visible {
+  border-color: rgba(20, 157, 221, 0.45);
+  box-shadow: 0 12px 28px rgba(23, 59, 108, 0.13);
+  color: #173b6c;
+  transform: translateY(-4px);
+}
+
+.metric-card:focus-visible {
+  outline: 3px solid rgba(20, 157, 221, 0.25);
+  outline-offset: 3px;
+}
+
+.metric-icon {
+  margin-bottom: 15px;
+  color: #149ddd;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.metric-value {
+  color: #050d18;
+  font-family: "Raleway", sans-serif;
+  font-size: clamp(30px, 2.2vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.metric-label {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  font-family: "Raleway", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.metric-period {
+  position: relative;
+  z-index: 1;
+  margin-top: 3px;
+  color: #6c757d;
+  font-size: 11px;
+}
+
+.metric-secondary {
+  position: relative;
+  z-index: 1;
+  margin-top: 5px;
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.metric-secondary strong {
+  color: #173b6c;
+  font-weight: 700;
+}
+
+.metrics-updated {
+  margin: 12px 2px 0;
+  color: #6c757d;
+  font-size: 12px;
+  text-align: right;
+}
+
+@media (max-width: 1199.98px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .about-metrics {
+    margin-top: 38px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .metric-card {
+    min-height: 136px;
+    padding: 18px 15px 15px;
+  }
+}
+
 /*--------------------------------------------------------------
 # Facts
 --------------------------------------------------------------*/

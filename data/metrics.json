@@ -2,7 +2,10 @@
   "papers": 7,
   "citations": 24,
   "github_stars": 78,
-  "pypi_downloads": 35107,
+  "pypi_downloads": 35785,
   "conferences": 27,
-  "updated_at": "2026-08-07T15:07:28Z"
+  "updated_at": "2026-08-07T15:07:28Z",
+  "stale_sources": [
+    "google_scholar"
+  ]
 }

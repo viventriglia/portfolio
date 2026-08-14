@@ -7,6 +7,8 @@ import html
 import json
 import os
 import re
+import subprocess
+import sys
 import time
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -20,6 +22,7 @@ OUTPUT_PATH = ROOT / "data" / "metrics.json"
 INDEX_PATH = ROOT / "index.html"
 
 SCHOLAR_ID = "_9OzwqMAAAAJ"
+SCHOLAR_WORKER_MARKER = "SCHOLAR_METRICS_JSON="
 GITHUB_USER = "viventriglia"
 PYPI_PACKAGE = "pytecgg"
 CONFERENCE_OFFSET = 11  # 2 talk PyData Roma + 1 SIF + 8 fra PyData e altro
@@ -67,56 +70,132 @@ def parse_number(value: str) -> int:
     return int(digits)
 
 
-def scholar_metrics() -> dict[str, int]:
-    """Read publication and citation totals from a public Scholar profile."""
-    page_size = 100
-    paper_count = 0
-    stats: list[int] | None = None
+def fetch_scholar_metrics() -> dict[str, int]:
+    """Read publication and citation totals in an isolated scholarly worker."""
+    try:
+        from scholarly import ProxyGenerator, scholarly
+    except ImportError as error:
+        raise RuntimeError(
+            "The scholarly dependency is missing; install requirements.txt"
+        ) from error
 
-    for start in range(0, 2_000, page_size):
-        query = urlencode(
-            {
-                "user": SCHOLAR_ID,
-                "hl": "en",
-                "cstart": start,
-                "pagesize": page_size,
-            }
-        )
-        page = request_text(f"https://scholar.google.com/citations?{query}")
+    scholarly.set_timeout(30)
+    scholarly.set_retries(3)
 
-        if "gsc_prf_in" not in page or "gsc_rsb_std" not in page:
-            raise RuntimeError(
-                "Google Scholar returned an unexpected page or a bot check"
-            )
-
-        if stats is None:
-            raw_stats = re.findall(
-                r'<td[^>]*class=["\'][^"\']*\bgsc_rsb_std\b[^"\']*["\'][^>]*>'
-                r"(.*?)</td>",
-                page,
-                flags=re.DOTALL,
-            )
-            stats = [parse_number(re.sub(r"<[^>]+>", "", value)) for value in raw_stats]
-            if not stats:
-                raise RuntimeError("Could not find Scholar citation statistics")
-
-        rows_on_page = len(
-            re.findall(r'class=["\'][^"\']*\bgsc_a_tr\b[^"\']*["\']', page)
-        )
-        paper_count += rows_on_page
-
-        if rows_on_page < page_size:
-            break
+    scraper_api_key = os.environ.get("SCRAPER_API_KEY")
+    proxy = ProxyGenerator()
+    if scraper_api_key:
+        if not proxy.ScraperAPI(scraper_api_key):
+            raise RuntimeError("Could not configure scholarly's ScraperAPI proxy")
     else:
-        raise RuntimeError("Scholar profile pagination exceeded the safety limit")
+        if not proxy.FreeProxies(timeout=2, wait_time=45):
+            raise RuntimeError("Could not configure scholarly's free proxy pool")
 
-    if paper_count == 0 or stats is None:
-        raise RuntimeError("Could not find publications in the Scholar profile")
+    # Reuse the selected proxy for every request instead of creating a second
+    # implicit free-proxy pool for less protected Scholar pages.
+    scholarly.use_proxy(proxy, proxy)
+
+    author = scholarly.search_author_id(SCHOLAR_ID, filled=True)
+    publications = author.get("publications")
+    citations = author.get("citedby")
+
+    if not isinstance(publications, list) or not publications:
+        raise RuntimeError("scholarly did not return the profile publications")
+    if not isinstance(citations, int) or citations < 0:
+        raise RuntimeError("scholarly did not return the profile citation count")
 
     return {
-        "papers": paper_count,
-        "citations": stats[0],
+        "papers": len(publications),
+        "citations": citations,
     }
+
+
+def scholar_metrics() -> dict[str, int]:
+    """Run scholarly with a hard timeout so free proxies cannot hang the job."""
+    timeout = int(os.environ.get("SCHOLAR_WORKER_TIMEOUT", "90"))
+    try:
+        completed = subprocess.run(
+            [sys.executable, str(Path(__file__).resolve()), "--scholar-worker"],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+    except subprocess.TimeoutExpired as error:
+        raise RuntimeError(
+            f"scholarly and its proxy did not finish within {timeout} seconds"
+        ) from error
+
+    if completed.returncode != 0:
+        details = (completed.stderr or completed.stdout).strip()
+        raise RuntimeError(f"scholarly worker failed: {details}")
+
+    payload_line = next(
+        (
+            line.removeprefix(SCHOLAR_WORKER_MARKER)
+            for line in reversed(completed.stdout.splitlines())
+            if line.startswith(SCHOLAR_WORKER_MARKER)
+        ),
+        None,
+    )
+    if payload_line is None:
+        raise RuntimeError("scholarly worker returned no metrics")
+
+    payload = json.loads(payload_line)
+    return {"papers": int(payload["papers"]), "citations": int(payload["citations"])}
+
+
+def run_scholar_worker() -> int:
+    """Worker entry point kept separate so the parent can terminate it safely."""
+    try:
+        metrics = fetch_scholar_metrics()
+    except Exception as error:
+        print(str(error), file=sys.stderr)
+        return 1
+    print(f"{SCHOLAR_WORKER_MARKER}{json.dumps(metrics)}")
+    return 0
+
+
+def load_existing_metrics() -> dict[str, Any]:
+    """Load the last committed snapshot for per-source fallbacks."""
+    try:
+        payload = json.loads(OUTPUT_PATH.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def collect_with_fallback(
+    source_name: str,
+    metric_names: tuple[str, ...],
+    fetcher: Any,
+    existing: dict[str, Any],
+) -> tuple[dict[str, int], bool]:
+    """Collect one source, retaining its previous values on transient failure."""
+    try:
+        fresh = fetcher()
+        if isinstance(fresh, int):
+            fresh = {metric_names[0]: fresh}
+        if not isinstance(fresh, dict):
+            raise TypeError("collector returned an unexpected value")
+        return {name: int(fresh[name]) for name in metric_names}, False
+    except Exception as error:
+        fallback = {
+            name: existing[name]
+            for name in metric_names
+            if isinstance(existing.get(name), int)
+        }
+        if len(fallback) != len(metric_names):
+            raise RuntimeError(
+                f"{source_name} failed and no complete previous values are available"
+            ) from error
+
+        message = str(error).replace("\n", " ")
+        print(
+            f"::warning title={source_name} metrics stale::"
+            f"Using the last committed values because collection failed: {message}"
+        )
+        return fallback, True
 
 
 def github_stars() -> int:
@@ -227,15 +306,40 @@ def update_html_fallbacks(metrics: dict[str, int | str]) -> None:
 
 
 def main() -> None:
-    metrics = {
-        **scholar_metrics(),
-        "github_stars": github_stars(),
-        "pypi_downloads": pypi_downloads(),
-        "conferences": conference_count(),
-        "updated_at": datetime.now(timezone.utc)
+    existing = load_existing_metrics()
+    scholar, scholar_stale = collect_with_fallback(
+        "Google Scholar", ("papers", "citations"), scholar_metrics, existing
+    )
+    github, github_stale = collect_with_fallback(
+        "GitHub", ("github_stars",), github_stars, existing
+    )
+    pypi, pypi_stale = collect_with_fallback(
+        "PyPI", ("pypi_downloads",), pypi_downloads, existing
+    )
+
+    stale_sources = [
+        name
+        for name, is_stale in (
+            ("google_scholar", scholar_stale),
+            ("github", github_stale),
+            ("pypi", pypi_stale),
+        )
+        if is_stale
+    ]
+    now = (
+        datetime.now(timezone.utc)
         .isoformat(timespec="seconds")
-        .replace("+00:00", "Z"),
+        .replace("+00:00", "Z")
+    )
+    metrics = {
+        **scholar,
+        **github,
+        **pypi,
+        "conferences": conference_count(),
+        "updated_at": existing.get("updated_at", now) if stale_sources else now,
     }
+    if stale_sources:
+        metrics["stale_sources"] = stale_sources
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(metrics, indent=2) + "\n", encoding="utf-8")
@@ -244,4 +348,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    if "--scholar-worker" in sys.argv:
+        raise SystemExit(run_scholar_worker())
     main()

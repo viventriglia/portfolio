@@ -235,7 +235,7 @@
   }
 
   /**
-   * Weekly portfolio metrics
+   * Twice-weekly portfolio metrics
    */
   const metricsGrid = select('.metrics-grid')
 
@@ -248,11 +248,17 @@
       })
       .then((metrics) => {
         const numberFormatter = new Intl.NumberFormat('en-US')
+        const compactFormatter = new Intl.NumberFormat('en-US', {
+          notation: 'compact',
+          maximumFractionDigits: 1
+        })
 
         select('[data-metric]', true).forEach((element) => {
           const value = metrics[element.dataset.metric]
           if (Number.isFinite(value)) {
-            element.textContent = numberFormatter.format(value)
+            element.textContent = element.dataset.metric === 'pypi_downloads'
+              ? compactFormatter.format(value).replace('K', 'k')
+              : numberFormatter.format(value)
           }
         })
 

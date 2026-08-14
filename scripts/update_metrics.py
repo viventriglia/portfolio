@@ -68,6 +68,15 @@ def parse_number(value: str) -> int:
     return int(digits)
 
 
+def format_compact_number(value: int) -> str:
+    """Format a KPI with at most one decimal and a compact suffix."""
+    for divisor, suffix in ((1_000_000_000, "B"), (1_000_000, "M"), (1_000, "k")):
+        if abs(value) >= divisor:
+            compact = f"{value / divisor:.1f}".rstrip("0").rstrip(".")
+            return f"{compact}{suffix}"
+    return f"{value:,}"
+
+
 def scholar_metrics() -> dict[str, int]:
     """Read paper and citation totals through SerpApi's Scholar Author API."""
     api_key = os.environ.get("SERPAPI_KEY")
@@ -249,8 +258,14 @@ def update_html_fallbacks(metrics: dict[str, int | str]) -> None:
         pattern = re.compile(
             rf'(<[^>]+\bdata-metric="{metric_name}"[^>]*>)[^<]*(</[^>]+>)'
         )
+        value = int(metrics[metric_name])
+        display_value = (
+            format_compact_number(value)
+            if metric_name == "pypi_downloads"
+            else f"{value:,}"
+        )
         markup, replacements = pattern.subn(
-            rf"\g<1>{int(metrics[metric_name]):,}\g<2>", markup, count=1
+            rf"\g<1>{display_value}\g<2>", markup, count=1
         )
         if replacements != 1:
             raise RuntimeError(f"Could not update the {metric_name} HTML fallback")

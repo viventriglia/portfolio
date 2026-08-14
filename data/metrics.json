@@ -1,11 +1,8 @@
 {
-  "papers": 7,
+  "papers": 9,
   "citations": 24,
   "github_stars": 78,
   "pypi_downloads": 35785,
   "conferences": 27,
-  "updated_at": "2026-08-07T15:07:28Z",
-  "stale_sources": [
-    "google_scholar"
-  ]
+  "updated_at": "2026-08-14T20:59:49Z"
 }

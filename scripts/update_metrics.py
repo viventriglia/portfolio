@@ -7,8 +7,6 @@ import html
 import json
 import os
 import re
-import subprocess
-import sys
 import time
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -22,7 +20,6 @@ OUTPUT_PATH = ROOT / "data" / "metrics.json"
 INDEX_PATH = ROOT / "index.html"
 
 SCHOLAR_ID = "_9OzwqMAAAAJ"
-SCHOLAR_WORKER_MARKER = "SCHOLAR_METRICS_JSON="
 GITHUB_USER = "viventriglia"
 PYPI_PACKAGE = "pytecgg"
 CONFERENCE_OFFSET = 11  # 2 talk PyData Roma + 1 SIF + 8 fra PyData e altro
@@ -55,7 +52,8 @@ def request_text(url: str, *, headers: dict[str, str] | None = None) -> str:
             if attempt < 2:
                 time.sleep(2**attempt)
 
-    raise RuntimeError(f"Unable to fetch {url}: {last_error}") from last_error
+    safe_url = re.sub(r"([?&]api_key=)[^&]+", r"\1***", url)
+    raise RuntimeError(f"Unable to fetch {safe_url}: {last_error}") from last_error
 
 
 def request_json(url: str, *, headers: dict[str, str] | None = None) -> Any:
@@ -70,90 +68,56 @@ def parse_number(value: str) -> int:
     return int(digits)
 
 
-def fetch_scholar_metrics() -> dict[str, int]:
-    """Read publication and citation totals in an isolated scholarly worker."""
-    try:
-        from scholarly import ProxyGenerator, scholarly
-    except ImportError as error:
-        raise RuntimeError(
-            "The scholarly dependency is missing; install requirements.txt"
-        ) from error
-
-    scholarly.set_timeout(30)
-    scholarly.set_retries(3)
-
-    scraper_api_key = os.environ.get("SCRAPER_API_KEY")
-    proxy = ProxyGenerator()
-    if scraper_api_key:
-        if not proxy.ScraperAPI(scraper_api_key):
-            raise RuntimeError("Could not configure scholarly's ScraperAPI proxy")
-    else:
-        if not proxy.FreeProxies(timeout=2, wait_time=45):
-            raise RuntimeError("Could not configure scholarly's free proxy pool")
-
-    # Reuse the selected proxy for every request instead of creating a second
-    # implicit free-proxy pool for less protected Scholar pages.
-    scholarly.use_proxy(proxy, proxy)
-
-    author = scholarly.search_author_id(SCHOLAR_ID, filled=True)
-    publications = author.get("publications")
-    citations = author.get("citedby")
-
-    if not isinstance(publications, list) or not publications:
-        raise RuntimeError("scholarly did not return the profile publications")
-    if not isinstance(citations, int) or citations < 0:
-        raise RuntimeError("scholarly did not return the profile citation count")
-
-    return {
-        "papers": len(publications),
-        "citations": citations,
-    }
-
-
 def scholar_metrics() -> dict[str, int]:
-    """Run scholarly with a hard timeout so free proxies cannot hang the job."""
-    timeout = int(os.environ.get("SCHOLAR_WORKER_TIMEOUT", "90"))
-    try:
-        completed = subprocess.run(
-            [sys.executable, str(Path(__file__).resolve()), "--scholar-worker"],
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-            check=False,
+    """Read paper and citation totals through SerpApi's Scholar Author API."""
+    api_key = os.environ.get("SERPAPI_KEY")
+    if not api_key:
+        raise RuntimeError("SERPAPI_KEY is not configured")
+
+    page_size = 100
+    paper_count = 0
+    citations: int | None = None
+
+    for start in range(0, 10_000, page_size):
+        query = urlencode(
+            {
+                "engine": "google_scholar_author",
+                "author_id": SCHOLAR_ID,
+                "hl": "en",
+                "num": page_size,
+                "start": start,
+                "api_key": api_key,
+            }
         )
-    except subprocess.TimeoutExpired as error:
-        raise RuntimeError(
-            f"scholarly and its proxy did not finish within {timeout} seconds"
-        ) from error
+        payload = request_json(f"https://serpapi.com/search.json?{query}")
+        if not isinstance(payload, dict):
+            raise RuntimeError("SerpApi returned an unexpected response")
+        if payload.get("error"):
+            raise RuntimeError(f"SerpApi error: {payload['error']}")
 
-    if completed.returncode != 0:
-        details = (completed.stderr or completed.stdout).strip()
-        raise RuntimeError(f"scholarly worker failed: {details}")
+        articles = payload.get("articles", [])
+        if not isinstance(articles, list):
+            raise RuntimeError("SerpApi returned an invalid articles list")
 
-    payload_line = next(
-        (
-            line.removeprefix(SCHOLAR_WORKER_MARKER)
-            for line in reversed(completed.stdout.splitlines())
-            if line.startswith(SCHOLAR_WORKER_MARKER)
-        ),
-        None,
-    )
-    if payload_line is None:
-        raise RuntimeError("scholarly worker returned no metrics")
+        if citations is None:
+            try:
+                raw_citations = payload["cited_by"]["table"][0]["citations"]["all"]
+                citations = int(raw_citations)
+            except (KeyError, IndexError, TypeError, ValueError) as error:
+                raise RuntimeError(
+                    "SerpApi returned no total citation count"
+                ) from error
 
-    payload = json.loads(payload_line)
-    return {"papers": int(payload["papers"]), "citations": int(payload["citations"])}
+        paper_count += len(articles)
+        if len(articles) < page_size:
+            break
+    else:
+        raise RuntimeError("SerpApi pagination exceeded the safety limit")
 
+    if paper_count == 0 or citations is None:
+        raise RuntimeError("SerpApi returned no Scholar publications")
 
-def run_scholar_worker() -> int:
-    """Worker entry point kept separate so the parent can terminate it safely."""
-    try:
-        metrics = fetch_scholar_metrics()
-    except Exception as error:
-        print(str(error), file=sys.stderr)
-        return 1
-    print(f"{SCHOLAR_WORKER_MARKER}{json.dumps(metrics)}")
-    return 0
+    return {"papers": paper_count, "citations": citations}
 
 
 def load_existing_metrics() -> dict[str, Any]:
@@ -348,6 +312,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    if "--scholar-worker" in sys.argv:
-        raise SystemExit(run_scholar_worker())
     main()

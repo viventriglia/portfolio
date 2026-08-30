@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    # Monday and Thursday early morning in Italy (06:20 CET / 07:20 CEST).
-    - cron: "20 5 * * 1,4"
+    # Every day in the early morning (06:20 CET / 07:20 CEST).
+    - cron: "20 5 * * *"
   workflow_dispatch:
 
 concurrency:

@@ -20,6 +20,7 @@ OUTPUT_PATH = ROOT / "data" / "metrics.json"
 INDEX_PATH = ROOT / "index.html"
 
 SCHOLAR_ID = "_9OzwqMAAAAJ"
+SCHOLAR_PAPER_OFFSET = -2  # Exclude one thesis preprint and one conference abstract.
 GITHUB_USER = "viventriglia"
 PYPI_PACKAGE = "pytecgg"
 CONFERENCE_OFFSET = 11  # 2 talk PyData Roma + 1 SIF + 8 fra PyData e altro
@@ -126,7 +127,11 @@ def scholar_metrics() -> dict[str, int]:
     if paper_count == 0 or citations is None:
         raise RuntimeError("SerpApi returned no Scholar publications")
 
-    return {"papers": paper_count, "citations": citations}
+    adjusted_paper_count = paper_count + SCHOLAR_PAPER_OFFSET
+    if adjusted_paper_count < 0:
+        raise RuntimeError("Scholar paper offset produced a negative publication count")
+
+    return {"papers": adjusted_paper_count, "citations": citations}
 
 
 def load_existing_metrics() -> dict[str, Any]:

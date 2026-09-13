@@ -5,8 +5,9 @@ on:
     branches:
       - main
   schedule:
-    # Every day overnight (03:20 CET / 04:20 CEST)
-    - cron: "20 2 * * *"
+    # Every day at 03:19 in Rome (following DST)
+    - cron: "19 3 * * *"
+      timezone: "Europe/Rome"
   workflow_dispatch:
 
 concurrency:

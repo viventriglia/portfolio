@@ -68,33 +68,57 @@ h1, h2, h3, h4, h5, h6 {
 # Back to top button
 --------------------------------------------------------------*/
 .back-to-top {
+  --scroll-progress: 0%;
   position: fixed;
   visibility: hidden;
   opacity: 0;
   right: 15px;
   bottom: 15px;
   z-index: 996;
-  background: #149ddd;
-  width: 40px;
-  height: 40px;
-  border-radius: 50px;
-  transition: all 0.4s;
+  width: 44px;
+  height: 44px;
+  padding: 3px;
+  border-radius: 50%;
+  background: conic-gradient(#149ddd var(--scroll-progress), rgba(33, 36, 49, 0.24) 0);
+  box-shadow: 0 5px 18px rgba(4, 11, 20, 0.2);
+  transform: translateY(8px) scale(0.94);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  isolation: isolate;
+}
+
+.back-to-top::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  border-radius: inherit;
+  background: #212431;
+  transition: background-color 0.25s ease;
 }
 
 .back-to-top i {
-  font-size: 28px;
+  font-size: 27px;
   color: #fff;
   line-height: 0;
 }
 
+.back-to-top:hover::before {
+  background: #173b6c;
+}
+
 .back-to-top:hover {
-  background: #2eafec;
   color: #fff;
+}
+
+.back-to-top:focus-visible {
+  outline: 2px solid #149ddd;
+  outline-offset: 3px;
 }
 
 .back-to-top.active {
   visibility: visible;
   opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /*--------------------------------------------------------------
@@ -106,9 +130,8 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   bottom: 0;
   width: 300px;
-  transition: all ease-in-out 0.5s;
+  transition: left 0.35s ease-in-out;
   z-index: 9997;
-  transition: all 0.5s;
   padding: 0 15px;
   background: #040b14;
   overflow-y: auto;
@@ -162,6 +185,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #main {
   margin-left: 300px;
+  transition: margin-left 0.35s ease-in-out;
 }
 
 @media (max-width: 1199px) {
@@ -223,26 +247,38 @@ h1, h2, h3, h4, h5, h6 {
   color: #149ddd;
 }
 
-/* Mobile Navigation */
+/* Sidebar Navigation */
 .mobile-nav-toggle {
   position: fixed;
   right: 15px;
   top: 15px;
   z-index: 9998;
-  border: 0;
-  font-size: 24px;
-  transition: all 0.4s;
-  outline: none !important;
-  background-color: #149ddd;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 22px;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.25s ease;
+  background-color: rgba(33, 36, 49, 0.94);
   color: #fff;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   line-height: 0;
-  border-radius: 50px;
+  border-radius: 50%;
   cursor: pointer;
+  box-shadow: 0 5px 18px rgba(4, 11, 20, 0.28);
+}
+
+.mobile-nav-toggle:hover {
+  background-color: #173b6c;
+  border-color: rgba(20, 157, 221, 0.7);
+  transform: translateY(-1px);
+}
+
+.mobile-nav-toggle:focus-visible {
+  outline: 2px solid #149ddd;
+  outline-offset: 3px;
 }
 
 .mobile-nav-active {
@@ -251,6 +287,30 @@ h1, h2, h3, h4, h5, h6 {
 
 .mobile-nav-active #header {
   left: 0;
+}
+
+@media (min-width: 1200px) {
+  .mobile-nav-toggle {
+    right: auto;
+    left: 15px;
+  }
+
+  .sidebar-collapsed #header {
+    left: -300px;
+  }
+
+  .sidebar-collapsed #main {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #header,
+  #main,
+  .mobile-nav-toggle,
+  .back-to-top {
+    transition: none;
+  }
 }
 
 /*--------------------------------------------------------------
@@ -756,22 +816,40 @@ section {
 }
 
 .resume .resume-column .resume-extra {
-  display: block;
-  max-height: 0;
+  display: none;
   opacity: 0;
-  overflow: hidden;
+  transform: translateY(10px);
   pointer-events: none;
-  transition: max-height 0.45s ease, opacity 0.25s ease;
 }
 
 .resume .resume-column.is-expanded .resume-extra {
+  display: block;
   opacity: 1;
+  transform: translateY(0);
   pointer-events: auto;
-  overflow: visible;
+  animation: resume-extra-enter 0.2s ease-out;
+}
+
+@keyframes resume-extra-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .resume .resume-column.is-expanded .resume-toggle i {
   transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume .resume-column.is-expanded .resume-extra {
+    animation: none;
+  }
 }
 
 @media (max-width: 991.98px) {

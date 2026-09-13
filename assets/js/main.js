@@ -76,25 +76,83 @@
    */
   let backtotop = select('.back-to-top')
   if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
+    const updateBacktotop = () => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = scrollableHeight > 0
+        ? Math.min(100, Math.max(0, (window.scrollY / scrollableHeight) * 100))
+        : 0
+
+      backtotop.style.setProperty('--scroll-progress', `${progress}%`)
+      backtotop.classList.toggle('active', window.scrollY > 100)
     }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
+    window.addEventListener('load', updateBacktotop)
+    onscroll(document, updateBacktotop)
   }
 
   /**
-   * Mobile nav toggle
+   * Sidebar navigation toggle
    */
-  on('click', '.mobile-nav-toggle', function(e) {
-    select('body').classList.toggle('mobile-nav-active')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
-  })
+  const navToggle = select('.mobile-nav-toggle')
+  const navToggleIcon = navToggle ? navToggle.querySelector('i') : null
+  const navigation = select('#header')
+  const desktopNavigation = window.matchMedia('(min-width: 1200px)')
+
+  const syncNavigationState = () => {
+    if (!navToggle || !navigation) return
+
+    const body = select('body')
+    const isOpen = desktopNavigation.matches
+      ? !body.classList.contains('sidebar-collapsed')
+      : body.classList.contains('mobile-nav-active')
+
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
+    navToggle.setAttribute('aria-label', isOpen ? 'Hide navigation' : 'Show navigation')
+    navigation.setAttribute('aria-hidden', isOpen ? 'false' : 'true')
+    navigation.inert = !isOpen
+
+    if (navToggleIcon) {
+      const showCloseIcon = isOpen
+      navToggleIcon.classList.toggle('bi-list', !showCloseIcon)
+      navToggleIcon.classList.toggle('bi-x', showCloseIcon)
+    }
+  }
+
+  if (navToggle) {
+    if (desktopNavigation.matches) {
+      try {
+        select('body').classList.toggle(
+          'sidebar-collapsed',
+          localStorage.getItem('sidebar-collapsed') === 'true'
+        )
+      } catch (error) {
+        console.warn('Could not restore the sidebar preference:', error)
+      }
+    }
+
+    navToggle.addEventListener('click', () => {
+      const body = select('body')
+
+      if (desktopNavigation.matches) {
+        const collapsed = body.classList.toggle('sidebar-collapsed')
+        try {
+          localStorage.setItem('sidebar-collapsed', String(collapsed))
+        } catch (error) {
+          console.warn('Could not save the sidebar preference:', error)
+        }
+      } else {
+        body.classList.toggle('mobile-nav-active')
+      }
+
+      syncNavigationState()
+    })
+
+    desktopNavigation.addEventListener('change', () => {
+      select('body').classList.remove('mobile-nav-active')
+      syncNavigationState()
+    })
+
+    syncNavigationState()
+  }
 
   /**
    * Scrool with ofset on links with a class name .scrollto
@@ -106,9 +164,7 @@
       let body = select('body')
       if (body.classList.contains('mobile-nav-active')) {
         body.classList.remove('mobile-nav-active')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
+        syncNavigationState()
       }
       scrollto(this.hash)
     }
@@ -194,18 +250,15 @@
    */
   let resumeColumns = select('.resume .resume-column', true)
 
-  const updateResumeColumns = () => {
-    resumeColumns.forEach((column) => {
-      const button = column.querySelector('.resume-toggle')
-      const extra = column.querySelector('.resume-extra')
+  const updateResumeColumn = (column) => {
+    const button = column.querySelector('.resume-toggle')
+    const extra = column.querySelector('.resume-extra')
 
-      if (!button || !extra) return
+    if (!button || !extra) return
 
-      const expanded = button.getAttribute('aria-expanded') === 'true'
-      column.classList.toggle('is-expanded', expanded)
-      extra.setAttribute('aria-hidden', expanded ? 'false' : 'true')
-      extra.style.maxHeight = expanded ? `${extra.scrollHeight}px` : '0px'
-    })
+    const expanded = button.getAttribute('aria-expanded') === 'true'
+    column.classList.toggle('is-expanded', expanded)
+    extra.setAttribute('aria-hidden', expanded ? 'false' : 'true')
   }
 
   if (resumeColumns.length) {
@@ -226,12 +279,11 @@
             : button.dataset.collapsedLabel
         }
 
-        updateResumeColumns()
+        updateResumeColumn(column)
       })
-    })
 
-    updateResumeColumns()
-    window.addEventListener('resize', updateResumeColumns)
+      updateResumeColumn(column)
+    })
   }
 
   /**

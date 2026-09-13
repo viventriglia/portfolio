@@ -137,7 +137,7 @@
             padding: 0 15px;
             background: #040b14;
             overflow-y: auto;
-            transition: all 0.5s ease-in-out;
+            transition: left 0.35s ease-in-out;
         }
         #header .profile img {
             margin: 30px auto;
@@ -179,7 +179,10 @@
             background: #149ddd;
             color: #fff;
         }
-        #main { margin-left: 300px; }
+        #main {
+            margin-left: 300px;
+            transition: margin-left 0.35s ease-in-out;
+        }
         .nav-menu { padding: 30px 0 0; }
         .nav-menu * {
             margin: 0;
@@ -220,21 +223,35 @@
             top: 15px;
             right: 15px;
             z-index: 9998;
-            border: 0;
-            width: 40px;
-            height: 40px;
-            border-radius: 50px;
-            background-color: #149ddd;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(33, 36, 49, 0.94);
             color: #fff;
-            font-size: 24px;
+            font-size: 22px;
             line-height: 0;
             cursor: pointer;
             align-items: center;
             justify-content: center;
-            transition: all 0.4s;
+            box-shadow: 0 5px 18px rgba(4, 11, 20, 0.28);
+            transition: background-color 0.25s ease, border-color 0.25s ease,
+                box-shadow 0.25s ease, transform 0.25s ease;
         }
         .mobile-nav-active { overflow: hidden; }
         .mobile-nav-active #header { left: 0; }
+        @media (min-width: 1200px) {
+            .mobile-nav-toggle {
+                right: auto;
+                left: 15px;
+            }
+            .sidebar-collapsed #header { left: -300px; }
+            .sidebar-collapsed #main { margin-left: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #header,
+            #main { transition: none; }
+        }
         #hero {
             position: relative;
             width: 100%;
@@ -431,8 +448,10 @@
 
 <body>
 
-<!-- ======= Mobile nav toggle button ======= -->
-<i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+<!-- ======= Sidebar navigation toggle ======= -->
+<button class="mobile-nav-toggle" type="button" aria-controls="header" aria-expanded="true" aria-label="Hide navigation">
+    <i class="bi bi-list" aria-hidden="true"></i>
+</button>
 
 <!-- ======= Header ======= -->
 <header id="header">
@@ -1592,8 +1611,8 @@
 
 <!--   ======= Footer =======-->
 
-<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-        class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center" aria-label="Back to top"><i
+        class="bi bi-arrow-up-short" aria-hidden="true"></i></a>
 
 <!-- Vendor JS Files -->
 <script src="assets/vendor/aos/aos.js"></script>

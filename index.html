@@ -35,11 +35,6 @@
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://viventriglia.github.io/portfolio/sitemap.xml">
     <link rel="preload" as="image" href="assets/img/bckg.webp" fetchpriority="high">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-
     <!-- Critical CSS -->
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -344,15 +339,9 @@
         }
     </style>
 
-    <!-- Google Fonts -->
-    <link rel="preload"
-          href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,700i|Raleway:500,600,700|Poppins:400,600&display=swap"
-          as="style"
-          onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,700i|Raleway:500,600,700|Poppins:400,600&display=swap"
-              rel="stylesheet">
-    </noscript>
+    <!-- Self-hosted fonts -->
+    <link rel="stylesheet" href="assets/css/fonts.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
 
     <!-- Vendor CSS Files -->
     <link rel="preload" href="assets/vendor/bootstrap/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -369,10 +358,10 @@
     <noscript><link href="assets/css/style.css" rel="stylesheet"></noscript>
 
     <!-- Social icons -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/academicons/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons/css/academicons.min.css"></noscript>
+    <link rel="preload" href="assets/vendor/fontawesome-free/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/vendor/fontawesome-free/css/all.min.css"></noscript>
+    <link rel="preload" href="assets/vendor/academicons/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/vendor/academicons/css/academicons.min.css"></noscript>
 
     <script type="application/ld+json">
         {
@@ -1609,7 +1598,15 @@
 
 </main><!-- End #main -->
 
-<!--   ======= Footer =======-->
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-inner">
+        <p class="footer-copyright">&copy; 2026 Vincenzo Ventriglia</p>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <a href="https://github.com/viventriglia" target="_blank" rel="noopener noreferrer">GitHub</a><span aria-hidden="true">&middot;</span><a href="https://www.linkedin.com/in/vincenzoventriglia/" target="_blank" rel="noopener noreferrer">LinkedIn</a><span aria-hidden="true">&middot;</span><a href="privacy.html">Privacy Policy</a>
+        </nav>
+    </div>
+</footer>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center" aria-label="Back to top"><i
         class="bi bi-arrow-up-short" aria-hidden="true"></i></a>

@@ -340,8 +340,10 @@
     </style>
 
     <!-- Self-hosted fonts -->
-    <link rel="stylesheet" href="assets/css/fonts.css">
-    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="preload" href="assets/css/fonts.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/fonts.css"></noscript>
+    <link rel="preload" href="assets/css/footer.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="assets/css/footer.css"></noscript>
 
     <!-- Vendor CSS Files -->
     <link rel="preload" href="assets/vendor/bootstrap/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">

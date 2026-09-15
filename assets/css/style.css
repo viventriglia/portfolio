@@ -39,17 +39,20 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Raleway", sans-serif;
 }
 
-.col-lg-6 a {
+.col-lg-6 a,
+.about .content > p a {
   color: inherit;
   position: relative;
   transition: color 0.3s ease;
 }
 
-.col-lg-6 a:hover {
+.col-lg-6 a:hover,
+.about .content > p a:hover {
   color: #007bff;
 }
 
-.col-lg-6 a::after {
+.col-lg-6 a::after,
+.about .content > p a::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -60,7 +63,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: width 0.3s ease;
 }
 
-.col-lg-6 a:hover::after {
+.col-lg-6 a:hover::after,
+.about .content > p a:hover::after {
   width: 100%; /* Extend the line when the pointer hovers */
 }
 

@@ -23,6 +23,7 @@ ATTENDANCE_TYPES = {
     "attendee": ("Attendee", "bi bi-person-badge"),
     "poster": ("Poster", "bi bi-easel"),
     "speaker": ("Speaker", "bi bi-mic"),
+    "lecturer": ("Lecturer", "bi bi-mic"),
     "exhibitor": ("Exhibitor", "bi bi-briefcase"),
     "keynote_speaker": ("Keynote Speaker", "bi bi-star-fill"),
 }
@@ -34,8 +35,18 @@ LINK_TYPES = {
 }
 
 MONTHS = (
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 )
 
 
@@ -56,8 +67,12 @@ def nonempty_string(value: Any, field: str, event_id: str) -> str:
 
 def load_events() -> list[dict[str, Any]]:
     payload = json.loads(EVENTS_PATH.read_text(encoding="utf-8"))
-    if payload.get("schema_version") != 1 or not isinstance(payload.get("events"), list):
-        raise ValueError("events.json must contain schema_version 1 and an events array")
+    if payload.get("schema_version") != 1 or not isinstance(
+        payload.get("events"), list
+    ):
+        raise ValueError(
+            "events.json must contain schema_version 1 and an events array"
+        )
 
     events: list[dict[str, Any]] = []
     seen_ids: set[str] = set()
@@ -146,7 +161,7 @@ def render_event(event: dict[str, Any], indent: str) -> str:
         metadata.append(
             f'<a href="{url}" target="_blank" rel="noopener noreferrer">'
             f'<i class="{icon}" style="color: #149ddd;"></i> '
-            f'<strong>{label}</strong></a>'
+            f"<strong>{label}</strong></a>"
         )
 
     continuation = f" &nbsp;|&nbsp;\n{indent}        "
@@ -155,9 +170,9 @@ def render_event(event: dict[str, Any], indent: str) -> str:
             f'{indent}<li style="margin-bottom: 10px;">',
             f'{indent}    <strong style="font-size: 1.05rem; color: #173b6c;">{name}</strong><br>',
             f'{indent}    <span style="color: #666; font-size: 0.95rem;">',
-            f'{indent}        {continuation.join(metadata)}',
-            f'{indent}    </span>',
-            f'{indent}</li>',
+            f"{indent}        {continuation.join(metadata)}",
+            f"{indent}    </span>",
+            f"{indent}</li>",
         )
     )
 
@@ -178,7 +193,9 @@ def render_lists(events: list[dict[str, Any]], today: date) -> str:
         '                    <ul style="list-style-type: none; padding-left: 30px; padding-top: 10px;">',
     ]
     if upcoming:
-        lines.extend(render_event(event, "                        ") for event in upcoming)
+        lines.extend(
+            render_event(event, "                        ") for event in upcoming
+        )
     else:
         lines.append(
             '                        <li style="margin-bottom: 10px; color: #666;">'
@@ -207,8 +224,13 @@ def render_lists(events: list[dict[str, Any]], today: date) -> str:
                 '                        <ul style="list-style-type: none; padding-left: 30px; padding-top: 10px;">',
             )
         )
-        lines.extend(render_event(event, "                            ") for event in by_year[year])
-        lines.extend(("                        </ul>", "                    </details>"))
+        lines.extend(
+            render_event(event, "                            ")
+            for event in by_year[year]
+        )
+        lines.extend(
+            ("                        </ul>", "                    </details>")
+        )
         if index != len(by_year) - 1:
             lines.append("")
 
@@ -240,7 +262,9 @@ def update_index(rendered: str, *, check: bool) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--today", type=date.fromisoformat, help="Override today's date")
+    parser.add_argument(
+        "--today", type=date.fromisoformat, help="Override today's date"
+    )
     parser.add_argument("--check", action="store_true", help="Validate without writing")
     args = parser.parse_args()
 

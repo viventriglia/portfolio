@@ -64,6 +64,17 @@
       ]
     },
     {
+      "id": "ssas-python-ai-guest-lecture-2025",
+      "name": "Invited Lecture on Python & AI @ Scuola Superiore di Studi Avanzati Sapienza",
+      "start_date": "2025-12-02",
+      "end_date": "2025-12-02",
+      "location": {
+        "place": "Rome",
+        "country": "Italy"
+      },
+      "attendance_type": "lecturer"
+    },
+    {
       "id": "new-space-economy-2025",
       "name": "New Space Economy 2025 – European Expoforum",
       "start_date": "2025-12-10",

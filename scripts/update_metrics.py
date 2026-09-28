@@ -24,8 +24,8 @@ SCHOLAR_ID = "_9OzwqMAAAAJ"
 SCHOLAR_PAPER_OFFSET = -2  # Exclude one thesis preprint and one conference abstract.
 GITHUB_USER = "viventriglia"
 PYPI_PACKAGE = "pytecgg"
-CONFERENCE_OFFSET = 6
-# 2 talk PyData Roma + 1 SIF + 1 SSAS + 1 TAS + 1 PyCampania
+CONFERENCE_OFFSET = 5
+# 2 talk PyData Roma + 1 SIF + 1 TAS + 1 PyCampania
 
 USER_AGENT = (
     "portfolio-metrics/1.0 "

@@ -1,17 +1,17 @@
-name: Update portfolio metrics
+name: Update portfolio content
 
 on:
   push:
     branches:
       - main
   schedule:
-    # Every day at 03:19 in Rome (following DST)
+    # Every day at 03:19 in Italy (following DST)
     - cron: "19 3 * * *"
       timezone: "Europe/Rome"
   workflow_dispatch:
 
 concurrency:
-  group: portfolio-metrics-and-pages
+  group: portfolio-content-and-pages
   cancel-in-progress: false
 
 permissions:
@@ -19,8 +19,12 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  TZ: Europe/Rome
+
 jobs:
-  update:
+  update-metrics:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -32,20 +36,17 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Python
-        if: github.event_name != 'push'
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Collect public metrics
-        if: github.event_name != 'push'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python scripts/update_metrics.py
 
       - name: Commit updated metrics
-        if: github.event_name != 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -57,6 +58,50 @@ jobs:
             git push origin HEAD:main
           fi
 
+  update-events:
+    if: ${{ always() && github.event_name != 'push' }}
+    needs: update-metrics
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out latest main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Update event status
+        run: python scripts/update_events.py --today "$(TZ=Europe/Rome date +%F)"
+
+      - name: Commit updated event status
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "Event status is already current."
+          else
+            git commit -m "chore: update portfolio events"
+            git push origin HEAD:main
+          fi
+
+  publish:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -66,7 +111,8 @@ jobs:
           path: .
 
   deploy:
-    needs: update
+    if: github.event_name == 'push'
+    needs: publish
     runs-on: ubuntu-latest
     environment:
       name: github-pages

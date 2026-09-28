@@ -17,13 +17,15 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PATH = ROOT / "data" / "metrics.json"
+EVENTS_PATH = ROOT / "data" / "events.json"
 INDEX_PATH = ROOT / "index.html"
 
 SCHOLAR_ID = "_9OzwqMAAAAJ"
 SCHOLAR_PAPER_OFFSET = -2  # Exclude one thesis preprint and one conference abstract.
 GITHUB_USER = "viventriglia"
 PYPI_PACKAGE = "pytecgg"
-CONFERENCE_OFFSET = 11  # 2 talk PyData Roma + 1 SIF + 8 fra PyData e altro
+CONFERENCE_OFFSET = 6
+# 2 talk PyData Roma + 1 SIF + 1 SSAS + 1 TAS + 1 PyCampania
 
 USER_AGENT = (
     "portfolio-metrics/1.0 "
@@ -227,25 +229,20 @@ def pypi_downloads() -> int:
 
 
 def conference_count(today: date | None = None) -> int:
-    """Count dated, past conference entries in index.html, then add the agreed offset."""
-    markup = INDEX_PATH.read_text(encoding="utf-8")
-    section = re.search(
-        r'<section\b[^>]*\bid=["\']conferences["\'][^>]*>(.*?)</section>',
-        markup,
-        flags=re.DOTALL | re.IGNORECASE,
-    )
-    if section is None:
-        raise RuntimeError("Could not find the Conferences section in index.html")
-
-    reference_date = today or datetime.now(timezone.utc).date()
-    event_dates = re.findall(
-        r'<time\b[^>]*\bdatetime=["\'](\d{4}-\d{2}-\d{2})["\']',
-        section.group(1),
-        flags=re.IGNORECASE,
-    )
-    past_events = sum(
-        date.fromisoformat(event_date) < reference_date for event_date in event_dates
-    )
+    """Count completed non-attendee events, then add the agreed offset."""
+    payload = json.loads(EVENTS_PATH.read_text(encoding="utf-8"))
+    events = payload.get("events")
+    if not isinstance(events, list):
+        raise RuntimeError("data/events.json does not contain an events array")
+    reference_date = today or date.today()
+    try:
+        past_events = sum(
+            date.fromisoformat(event["end_date"]) < reference_date
+            and event["attendance_type"] != "attendee"
+            for event in events
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise RuntimeError("data/events.json contains an invalid event date") from error
     return past_events + CONFERENCE_OFFSET
 
 
@@ -311,9 +308,7 @@ def main() -> None:
         if is_stale
     ]
     now = (
-        datetime.now(timezone.utc)
-        .isoformat(timespec="seconds")
-        .replace("+00:00", "Z")
+        datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     )
     metrics = {
         **scholar,

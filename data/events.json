@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "events": [
+    {
+      "id": "esa-space-to-sea-solutions-2026",
+      "name": "ESA Business Applications and Space Solutions – Space-to-Sea Solutions",
+      "start_date": "2026-09-29",
+      "end_date": "2026-09-29",
+      "location": { "place": "Naples", "country": "Italy" },
+      "attendance_type": "attendee"
+    },
+    {
+      "id": "python-summit-2026",
+      "name": "Python Summit 2026",
+      "start_date": "2026-10-19",
+      "end_date": "2026-10-20",
+      "location": { "place": "Warsaw", "country": "Poland" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "come-to-code-2026",
+      "name": "Come To Code 2026",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-27",
+      "location": { "place": "Potenza", "country": "Italy" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "europython-2026",
+      "name": "EuroPython 2026",
+      "start_date": "2026-07-13",
+      "end_date": "2026-07-19",
+      "location": { "place": "Kraków", "country": "Poland" },
+      "attendance_type": "attendee"
+    },
+    {
+      "id": "esa-most-dragon-6-2026",
+      "name": "2026 ESA/MOST Dragon 6 Symposium",
+      "start_date": "2026-06-29",
+      "end_date": "2026-07-03",
+      "location": { "place": "Dublin", "country": "Ireland" },
+      "attendance_type": "poster"
+    },
+    {
+      "id": "pycon-italia-2026",
+      "name": "PyCon Italia 2026",
+      "start_date": "2026-05-27",
+      "end_date": "2026-05-30",
+      "location": { "place": "Bologna", "country": "Italy" },
+      "attendance_type": "speaker",
+      "links": [
+        { "type": "youtube", "url": "https://www.youtube.com/watch?v=m7KG0jHWC6A" }
+      ]
+    },
+    {
+      "id": "pycon-de-pydata-2026",
+      "name": "PyCon DE & PyData 2026",
+      "start_date": "2026-04-14",
+      "end_date": "2026-04-16",
+      "location": { "place": "Darmstadt", "country": "Germany" },
+      "attendance_type": "speaker",
+      "links": [
+        { "type": "youtube", "url": "https://www.youtube.com/watch?v=K7Hl3vXB5wA" }
+      ]
+    },
+    {
+      "id": "new-space-economy-2025",
+      "name": "New Space Economy 2025 – European Expoforum",
+      "start_date": "2025-12-10",
+      "end_date": "2025-12-12",
+      "location": { "place": "Rome", "country": "Italy" },
+      "attendance_type": "exhibitor",
+      "links": [
+        { "type": "youtube", "url": "https://www.youtube.com/watch?v=dPffN6aWLlM&t=606s" },
+        { "type": "spotify", "url": "https://open.spotify.com/episode/1pMQHoLqMYwWImYCRjMkam" }
+      ]
+    },
+    {
+      "id": "beacon-satellite-symposium-2025",
+      "name": "Beacon Satellite Symposium 2025",
+      "start_date": "2025-11-10",
+      "end_date": "2025-11-14",
+      "location": { "place": "Rome", "country": "Italy" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "ai-in-physical-sciences-2025",
+      "name": "AI in Physical Sciences",
+      "start_date": "2025-09-19",
+      "end_date": "2025-09-19",
+      "location": { "place": "Rome", "country": "Italy" },
+      "attendance_type": "keynote_speaker",
+      "links": [
+        { "type": "website", "url": "https://sites.google.com/view/aiphys25/speakers-and-material#h.yhdsaayicnzo" }
+      ]
+    },
+    {
+      "id": "iaga-iaspei-2025",
+      "name": "IAGA / IASPEI Joint Scientific Meeting 2025",
+      "start_date": "2025-08-31",
+      "end_date": "2025-09-05",
+      "location": { "place": "Lisbon", "country": "Portugal" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "mathematics-signal-processing-geophysics-2025",
+      "name": "Mathematics for Signal Processing and Applications in Geophysics and Other Fields",
+      "start_date": "2025-06-09",
+      "end_date": "2025-06-14",
+      "location": { "place": "L'Aquila", "country": "Italy" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "pycon-de-pydata-2025",
+      "name": "PyCon DE & PyData 2025",
+      "start_date": "2025-04-23",
+      "end_date": "2025-04-25",
+      "location": { "place": "Darmstadt", "country": "Germany" },
+      "attendance_type": "speaker",
+      "links": [
+        { "type": "youtube", "url": "https://www.youtube.com/watch?v=EJVD-jU1A44" }
+      ]
+    },
+    {
+      "id": "ml-computer-vision-heliophysics-2025",
+      "name": "Machine Learning and Computer Vision in Heliophysics",
+      "start_date": "2025-04-07",
+      "end_date": "2025-04-09",
+      "location": { "place": "Sofia", "country": "Bulgaria" },
+      "attendance_type": "speaker"
+    },
+    {
+      "id": "new-space-economy-2024",
+      "name": "New Space Economy 2024 – European Expoforum",
+      "start_date": "2024-12-16",
+      "end_date": "2024-12-18",
+      "location": { "place": "Rome", "country": "Italy" },
+      "attendance_type": "exhibitor"
+    },
+    {
+      "id": "space-weather-italian-community-congress-2024",
+      "name": "Space Weather Italian Community Congress",
+      "start_date": "2024-11-27",
+      "end_date": "2024-11-29",
+      "location": { "place": "Rome", "country": "Italy" },
+      "attendance_type": "poster"
+    },
+    {
+      "id": "pydata-amsterdam-2024",
+      "name": "PyData Amsterdam 2024",
+      "start_date": "2024-09-18",
+      "end_date": "2024-09-20",
+      "location": { "place": "Amsterdam", "country": "Netherlands" },
+      "attendance_type": "attendee"
+    },
+    {
+      "id": "ursi-at-rasc-2024",
+      "name": "4th URSI Atlantic Radio Science Meeting (AT-RASC)",
+      "name_html": "4<sup>th</sup> URSI Atlantic Radio Science Meeting (AT-RASC)",
+      "start_date": "2024-05-19",
+      "end_date": "2024-05-24",
+      "location": { "place": "Gran Canaria", "country": "Spain" },
+      "attendance_type": "poster"
+    },
+    {
+      "id": "pycon-italia-2023",
+      "name": "PyCon Italia 2023",
+      "start_date": "2023-05-25",
+      "end_date": "2023-05-28",
+      "location": { "place": "Florence", "country": "Italy" },
+      "attendance_type": "attendee"
+    }
+  ]
+}

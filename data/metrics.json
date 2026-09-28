@@ -3,6 +3,9 @@
   "citations": 28,
   "github_stars": 92,
   "pypi_downloads": 38609,
-  "conferences": 28,
-  "updated_at": "2026-09-28T06:53:00Z"
+  "conferences": 20,
+  "updated_at": "2026-09-28T06:53:00Z",
+  "stale_sources": [
+    "google_scholar"
+  ]
 }

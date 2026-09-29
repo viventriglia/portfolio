@@ -92,7 +92,10 @@ jobs:
           fi
 
   publish:
-    if: github.event_name == 'push'
+    if: ${{ !cancelled() }}
+    needs:
+      - update-metrics
+      - update-events
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -111,7 +114,6 @@ jobs:
           path: .
 
   deploy:
-    if: github.event_name == 'push'
     needs: publish
     runs-on: ubuntu-latest
     environment:

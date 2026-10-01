@@ -2,14 +2,6 @@
   "schema_version": 1,
   "events": [
     {
-      "id": "esa-space-to-sea-solutions-2026",
-      "name": "ESA Business Applications and Space Solutions – Space-to-Sea Solutions",
-      "start_date": "2026-09-29",
-      "end_date": "2026-09-29",
-      "location": { "place": "Naples", "country": "Italy" },
-      "attendance_type": "attendee"
-    },
-    {
       "id": "python-summit-2026",
       "name": "Python Summit 2026",
       "start_date": "2026-10-19",

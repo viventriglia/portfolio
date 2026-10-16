@@ -199,7 +199,7 @@ def render_lists(events: list[dict[str, Any]], today: date) -> str:
     else:
         lines.append(
             '                        <li style="margin-bottom: 10px; color: #666;">'
-            "No upcoming events currently scheduled.</li>"
+            "Stay tuned for upcoming events!</li>"
         )
     lines.extend(
         (

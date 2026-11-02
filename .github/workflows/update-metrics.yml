@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    # Every day at 03:19 in Italy (following DST)
-    - cron: "19 3 * * *"
+    # Every day at 01:19 in Italy (following DST)
+    - cron: "19 1 * * *"
       timezone: "Europe/Rome"
   workflow_dispatch:
 

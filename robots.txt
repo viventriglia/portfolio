@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://viventriglia.github.io/portfolio/sitemap.xml
+Sitemap: https://vincenzoventriglia.com/sitemap.xml

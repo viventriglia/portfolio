@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://viventriglia.github.io/portfolio/</loc>
-    <lastmod>2026-09-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://vincenzoventriglia.com/</loc>
+    <lastmod>2026-11-07</lastmod>
   </url>
   <url>
-    <loc>https://viventriglia.github.io/portfolio/privacy.html</loc>
-    <lastmod>2026-09-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://vincenzoventriglia.com/privacy.html</loc>
+    <lastmod>2026-11-07</lastmod>
   </url>
 </urlset>

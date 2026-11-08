@@ -14,16 +14,15 @@ concurrency:
   group: portfolio-content-and-pages
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+permissions: {}
 
 env:
   TZ: Europe/Rome
 
 jobs:
   update-metrics:
+    permissions:
+      contents: write
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -59,6 +58,8 @@ jobs:
           fi
 
   update-events:
+    permissions:
+      contents: write
     if: ${{ always() && github.event_name != 'push' }}
     needs: update-metrics
     runs-on: ubuntu-latest
@@ -92,6 +93,9 @@ jobs:
           fi
 
   publish:
+    permissions:
+      contents: read
+      pages: read
     if: ${{ !cancelled() }}
     needs:
       - update-metrics
@@ -114,6 +118,9 @@ jobs:
           path: .
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     if: ${{ !cancelled() && needs.publish.result == 'success' }}
     needs: publish
     runs-on: ubuntu-latest
